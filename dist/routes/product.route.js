@@ -1,0 +1,14 @@
+import express from 'express';
+import { deleteProduct, getAllCategories, getAllProduct, getlatestProducts, getProductById, newProduct, searchProducts, updateProduct } from '../controllers/product.controller.js';
+import image from '../middlewares/multer.middleware.js';
+import { adminAuthentication } from '../middlewares/authentication/admin.authentication.js';
+const productRouter = express.Router();
+productRouter.route("/newProduct").post(adminAuthentication, image, newProduct);
+productRouter.route('/delete/:id').delete(adminAuthentication, deleteProduct);
+productRouter.route("/all").get(adminAuthentication, getAllProduct);
+productRouter.route('/:id').get(getProductById);
+productRouter.route("/latest/product").get(getlatestProducts);
+productRouter.route("/all/category").get(getAllCategories);
+productRouter.route("/update/product/:id").patch(adminAuthentication, image, updateProduct);
+productRouter.route('/search/product').get(searchProducts);
+export default productRouter;

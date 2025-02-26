@@ -1,0 +1,10 @@
+import express from 'express';
+import { deleteUser, getAllUser, getUserById, newUser, updateUser } from '../controllers/user.controller.js';
+import { adminAuthentication } from '../middlewares/authentication/admin.authentication.js';
+const userRouter = express.Router();
+userRouter.route("/newUser").post(newUser);
+userRouter.route('/all').get(adminAuthentication, getAllUser);
+userRouter.route('/:id').get(adminAuthentication, getUserById);
+userRouter.route('/:id').delete(adminAuthentication, deleteUser);
+userRouter.route('/update/user/:id').patch(updateUser);
+export default userRouter;

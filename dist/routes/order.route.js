@@ -1,0 +1,11 @@
+import express from 'express';
+import { allOrders, deleteOrder, getSingleOrder, myOrders, newOrder, orderProcess } from '../controllers/order.controller.js';
+import { adminAuthentication } from '../middlewares/authentication/admin.authentication.js';
+const orderRouter = express.Router();
+orderRouter.route("/newOrder").post(newOrder);
+orderRouter.route("/myOrders").get(myOrders);
+orderRouter.route('/allOrders').get(adminAuthentication, allOrders);
+orderRouter.route("/singleOrders/:id").get(getSingleOrder);
+orderRouter.route("/orderProcess/:id").put(adminAuthentication, orderProcess);
+orderRouter.route("/deleteOrder/:id").delete(adminAuthentication, deleteOrder);
+export default orderRouter;
