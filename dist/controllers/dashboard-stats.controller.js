@@ -24,7 +24,7 @@ export const getDashboardStats = TryCatch(async (req, res, next) => {
         const thisMonthProductsPromise = productModel.find({
             createdAt: {
                 $gte: thisMonth.start,
-                $lte: thisMonth.end,
+                $lte: thisMonth.end
             },
         });
         const lastMonthProductsPromise = productModel.find({
