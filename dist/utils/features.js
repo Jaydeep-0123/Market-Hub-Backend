@@ -16,6 +16,7 @@ export const invalidateCache = async ({ product, order, admin, userId, orderId, 
         myCache.del(orderKeys);
     }
     if (admin) {
+        myCache.del(["admin-stats", "admin-pie-charts", "admin-bar-charts", "admin-line-charts"]);
     }
 };
 export const reduceStock = async (orderItem) => {
@@ -33,7 +34,7 @@ export const calculatePercantage = (thisMonth, lastMonth) => {
     if (lastMonth === 0) {
         return thisMonth * 100;
     }
-    const percent = ((thisMonth - lastMonth) / lastMonth) * 100;
+    const percent = (thisMonth / lastMonth) * 100;
     return Number(percent.toFixed(0));
 };
 export const getCategories = async ({ allCategories, productsCount }) => {
@@ -46,4 +47,15 @@ export const getCategories = async ({ allCategories, productsCount }) => {
         });
     });
     return categoryCount;
+};
+export const getChartData = ({ length, docArr, today, property }) => {
+    const data = new Array(length).fill(0);
+    docArr.forEach((i) => {
+        const creationDate = i.createdAt;
+        const monthDiff = (today.getMonth() - creationDate.getMonth() + 12) % 12;
+        if (monthDiff < length) {
+            data[length - monthDiff - 1] += property ? i[property] : 1;
+        }
+    });
+    return data;
 };

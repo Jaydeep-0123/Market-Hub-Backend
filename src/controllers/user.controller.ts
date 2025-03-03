@@ -58,7 +58,6 @@ export const getAllUser = TryCatch(async (req, res, next) => {
 });
 
 
-
 export const getUserById=TryCatch(async (req,res,next)=>
 {
   const id=req.params.id;
