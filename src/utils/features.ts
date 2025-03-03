@@ -2,7 +2,7 @@ import { myCache } from "../app.js";
 import { getProductById } from "../controllers/product.controller.js";
 import orderModel from "../models/order.model.js";
 import productModel from "../models/product.model.js";
-import { InvalidateCacheProps, OrderItemType } from "../types/types.js";
+import { FuncProps, InvalidateCacheProps, OrderItemType } from "../types/types.js";
 
 export const invalidateCache=async({product,order,admin,userId,orderId,productId}:InvalidateCacheProps)=>
 {
@@ -27,7 +27,7 @@ export const invalidateCache=async({product,order,admin,userId,orderId,productId
     }
     if(admin)
     {
-
+       myCache.del(["admin-stats","admin-pie-charts","admin-bar-charts","admin-line-charts"]);
     }
 }
 
@@ -52,7 +52,7 @@ export const calculatePercantage=(thisMonth:number,lastMonth:number)=>{
   {
     return thisMonth*100;
   }
-  const percent=((thisMonth-lastMonth)/lastMonth)*100;
+  const percent=(thisMonth/lastMonth)*100;
   return Number(percent.toFixed(0));
   
 }
@@ -73,4 +73,27 @@ export const getCategories=async({allCategories,productsCount}:{allCategories: s
     })
     })
     return categoryCount
+}
+
+export interface MyDocumnet extends Document {
+  createdAt:Date;
+  discount?:number,
+  total?:number
+}
+
+export const getChartData=({length,docArr,today,property}:FuncProps)=>
+{
+  
+  const data:number[]=new Array(length).fill(0);
+  docArr.forEach((i)=>{
+     const creationDate = i.createdAt;
+     const monthDiff=(today.getMonth()-creationDate.getMonth()+12)%12;
+     if(monthDiff<length)
+     {
+       data[length-monthDiff-1]+=property?i[property]!:1; 
+    
+     }
+     
+  })
+  return data;
 }

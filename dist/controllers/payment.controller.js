@@ -2,6 +2,7 @@ import { StatusCodes } from "http-status-codes";
 import { TryCatch } from "../middlewares/error.middleware.js";
 import ErrorHandler from "../utils/utility-class.js";
 import couponModel from "../models/coupon.model.js";
+import { stripe } from "../app.js";
 export const newCoupon = TryCatch(async (req, res, next) => {
     const { coupon_Code, amount } = req.body;
     if (!coupon_Code || !amount) {
@@ -16,6 +17,22 @@ export const newCoupon = TryCatch(async (req, res, next) => {
         statusCode: 200,
         message: `Coupon ${coupon.coupon_Code} Created Successfully`,
         data: coupon,
+        error: ""
+    });
+});
+export const createPaymentIntent = TryCatch(async (req, res, next) => {
+    const { amount } = req.body;
+    if (!amount) {
+        return next(new ErrorHandler("Please enter amount", StatusCodes.BAD_REQUEST));
+    }
+    const realAmount = Number(amount) * 100;
+    const paymentIntent = await stripe.paymentIntents.create({ amount: realAmount, currency: "inr" });
+    console.log(paymentIntent);
+    return res.status(StatusCodes.OK).send({
+        success: true,
+        statusCode: 200,
+        message: `Payment Intent Created Successfully`,
+        data: paymentIntent.client_secret,
         error: ""
     });
 });

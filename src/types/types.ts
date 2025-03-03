@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import {ObjectId} from 'mongodb';   
+import { MyDocumnet } from "../utils/features.js";
 export interface NewUserRequestBody {
   name: string;
   email: string;
@@ -82,4 +83,11 @@ export interface NewOrderRequestBody {
   discount:number;
   total:number;
   orderItems:OrderItemType[]
+}
+
+export type FuncProps={
+  length:number;
+  docArr:MyDocumnet[];
+  today:Date;
+  property?:"discount"|"total"
 }
