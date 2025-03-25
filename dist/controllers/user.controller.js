@@ -24,7 +24,7 @@ export const newUser = TryCatch(async (req, res, next) => {
     return res.status(StatusCodes.OK).send({
         status: "success",
         statusCodes: 200,
-        msg: "User Inserted Successfully",
+        message: "User Inserted Successfully",
         data: { result },
         error: "",
     });

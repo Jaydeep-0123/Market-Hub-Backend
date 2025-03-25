@@ -4,7 +4,7 @@ import { adminAuthentication } from '../middlewares/authentication/admin.authent
 const userRouter = express.Router();
 userRouter.route("/newUser").post(newUser);
 userRouter.route('/all').get(adminAuthentication, getAllUser);
-userRouter.route('/:id').get(adminAuthentication, getUserById);
+userRouter.route('/:id').get(getUserById);
 userRouter.route('/:id').delete(adminAuthentication, deleteUser);
 userRouter.route('/update/user/:id').patch(updateUser);
 export default userRouter;
