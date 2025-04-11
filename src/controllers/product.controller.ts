@@ -190,6 +190,8 @@ export const updateProduct = TryCatch(async (req: Request, res, next) => {
 export const searchProducts = TryCatch(
   async (req: Request<{}, {}, {}, searchRequestQuery>, res, next) => {
     const { search, price, category, sort } = req.query;
+    
+    
     const page = Number(req.query.page) || 1;
     const limit = Number(process.env.PRODUCT_PER_PAGE) || 8;
     const skip = limit * (page - 1);
@@ -211,7 +213,8 @@ export const searchProducts = TryCatch(
       .limit(limit)
       .skip(skip),
       productModel.find(baseQuery)
-
+      
+      
     ])
    
     const totalPages=Math.ceil(filterProducts.length/limit);

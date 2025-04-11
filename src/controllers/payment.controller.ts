@@ -2,6 +2,7 @@ import { StatusCodes } from "http-status-codes";
 import { TryCatch } from "../middlewares/error.middleware.js";
 import ErrorHandler from "../utils/utility-class.js";
 import couponModel from "../models/coupon.model.js";
+import { stripe } from "../app.js";
 
 
 export const newCoupon=TryCatch(async (req,res,next)=>
@@ -80,6 +81,25 @@ export const deleteCoupon=TryCatch(async(req,res,next)=>
     success:true,
     statusCode:200,
     message:`Coupon ${coupon.coupon_Code} Deleted Successfully`,
+    error:""
+   })
+})
+
+export const createPaymentIntent=TryCatch(async(req,res,next)=>
+{
+   const {amount}=req.body;
+   if(!amount)
+   {
+     return next(new ErrorHandler("Please enter amount",400));
+   }
+   const paymentIntent=await stripe.paymentIntents.create({
+    amount:Number(amount)*100,
+    currency:'inr'
+   });
+   return res.status(StatusCodes.OK).send({
+    status:"success",
+    satatusCode:200,
+    clientSecret:paymentIntent.client_secret,
     error:""
    })
 })

@@ -7,16 +7,19 @@ import router from './routes/index.route.js';
 import dbConnection from './config/dbconnection.config.js';
 import NodeCache from 'node-cache'
 import { errorMiddleware } from './middlewares/error.middleware.js';
+import Stripe from 'stripe';
 dotenv.config();
 const app=express();
 
 const port = process.env.PORT||4000;
 const url = process.env.MONGO_URL || "defaultMongoURL";
+const secret_key=process.env.STRIPE_SECRET_KEY;
 
 
 dbConnection(url)
 
 export const myCache=new NodeCache();
+export const stripe=new Stripe(secret_key!)
 
 app.use('/uploads',express.static("uploads"))
 app.use(express.json());
