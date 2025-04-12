@@ -19,11 +19,7 @@ app.use('/uploads', express.static("uploads"));
 app.use(express.json());
 // app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({extended:true}));
-app.use(cors({
-    credentials: true,
-    origin: '*',
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-}));
+app.use(cors());
 app.use(morgan('common'));
 app.get("/", (req, res) => {
     res.send({ msg: "Api Working with /api/v1" });
