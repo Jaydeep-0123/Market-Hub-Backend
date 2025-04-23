@@ -25,7 +25,9 @@ app.use('/uploads',express.static("uploads"))
 app.use(express.json());
 // app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({extended:true}));
-app.use(cors());
+app.use(cors({
+    origin: '*',
+}));
 app.use(morgan('common'));
 
 app.get("/",(req,res)=>{
