@@ -29,7 +29,7 @@ export const newCoupon=TryCatch(async (req,res,next)=>
 
 export const createPaymentIntent=TryCatch(async (req,res,next)=>
 {
-  console.log("amount");
+  
   const {amount}=req.body;
   
   if(!amount)
